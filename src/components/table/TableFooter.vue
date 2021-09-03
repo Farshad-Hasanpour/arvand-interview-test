@@ -15,8 +15,8 @@
 						@input="delayedPageUpdate()"
 				/>
 			</div>
-			<span id="from-text">از {{totalPages}}</span>
-
+			<span id="from-text">از</span>
+			<span> {{totalPages}}</span>
 		</div>
 		<Icon id="loading-icon" v-show="loading" name="loading" size="36px" :color="themeColors.primary" rotate/>
 	</div>
