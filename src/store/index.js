@@ -13,7 +13,7 @@ const themes = {
 		line: 'rgba(0, 0, 0, .1)'
 	},
 	dark:{
-		primary: '#7989DA',
+		primary: '#7286ed',
 		secondary: '#171C21',
 		success: '#4ab190',
 		error: '#ef3d59',
@@ -46,7 +46,7 @@ let store = new Vuex.Store({
 	},
 	mutations: {
 		setCommentToShow(state, comment){
-			state.selectedComment = Vue.prototype.$utility.copyObj(comment);
+			state.pageDataToShow.comment = Vue.prototype.$utility.copyObj(comment);
 		},
 		showMessage: function(state, snackbar){
 			state.snackbar.timeoutID && clearTimeout(state.snackbar.timeoutID);  // reset timeout
@@ -89,7 +89,16 @@ let store = new Vuex.Store({
 		},
 		switchTheme(context){
 			context.commit('switchTheme');
-		}
+		},
+		showErrorByStatusCode(context, status){
+			if(status === 401){
+				context.dispatch('showMessage', {message: 'خطا در احراز هویت', messageType: 'error'});
+			}else if(status === 403){
+				context.dispatch('showMessage', {message: 'دسترسی غیر مجاز', messageType: 'error'});
+			}else{
+				context.dispatch('showMessage', {message: 'خطا در برقراری ارتباط با سرور', messageType: 'error'});
+			}
+		},
 	},
 	modules: {
 	}

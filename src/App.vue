@@ -56,7 +56,7 @@
 		--color-line: rgba(0, 0, 0, .1);
 	}
 	#app-wrapper[theme="dark"]{
-		--color-primary: #7989DA;
+		--color-primary: #7286ed;
 		--color-secondary: #171C21;
 		--color-success: #4ab190;
 		--color-error: #ef3d59;
@@ -100,6 +100,7 @@
 		align-items: center;
 		padding: 0 25px;
 	}
+	label{ user-select: none; }
 
 	/*** Chrome Scroll ***/
 	::-webkit-scrollbar {
