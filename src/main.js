@@ -12,7 +12,7 @@ Vue.component('Button', Button);
 Vue.config.productionTip = false;
 
 Vue.prototype.$http = axios.create({
-	baseURL: 'http://jsonplaceholder.typicode.com/',
+	baseURL: 'https://jsonplaceholder.typicode.com/',
 });
 
 Vue.prototype.$utility= {
