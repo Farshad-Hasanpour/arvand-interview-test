@@ -1,7 +1,7 @@
 <template>
 	<div id="snackbar" :class="[message && show ? 'visible' : '', type]">
 		<span class="message">{{message}}</span>
-		<Button class="close" type="icon" depressed @click="$store.dispatch('closeMessage')">
+		<Button class="close" ripple="" type="icon" depressed @click="$store.dispatch('closeMessage')">
 			<Icon name="close" title="بستن پیام"/>
         </Button>
 	</div>
@@ -59,6 +59,7 @@
 		margin-inline-start: 20px;
 	}
 	#snackbar.visible .close{ cursor: pointer; }
+	#snackbar .message{ font-weight: bold; }
 
 	@media only screen and (min-width: 600px) {
 		#snackbar {

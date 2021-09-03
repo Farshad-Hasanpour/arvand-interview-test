@@ -3,10 +3,10 @@
 		<div id="app">
 			<Snackbar/>
 			<header>
-				<Button class="setting-button" type="fab" dark height="36px" :color="themeColors.primary" title="تغییر قالب" @click="$store.dispatch('switchTheme')">
+				<Button class="setting-button" type="fab" dark size="36px" ripple="" :color="themeColors.primary" title="تغییر قالب" @click="$store.dispatch('switchTheme')">
 					<Icon name="brightness-4"/>
 				</Button>
-				<Button class="setting-button" type="fab" dark height="36px" :color="themeColors.primary" title="تغییر جهت" @click="$store.dispatch('switchDirection')">
+				<Button class="setting-button" type="fab" dark size="36px" ripple="" :color="themeColors.primary" title="تغییر جهت" @click="$store.dispatch('switchDirection')">
 					<Icon name="translate"/>
 				</Button>
 			</header>
