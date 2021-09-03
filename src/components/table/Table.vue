@@ -49,7 +49,25 @@
 		<thead>
 			<tr>
 				<th v-if="selectable">انتخاب</th>
-				<th v-for="(header, property) in headers" :key="property">{{header.title}}</th>
+				<th
+						v-for="(header, property) in headers"
+						:key="property"
+						:class="[
+							header.sortable ? 'sortable' : '',
+							sorting.property === property ? 'active' : ''
+						]"
+						@click="header.sortable ? sort(property) : undefined"
+				>
+					<div class="table-header-content">
+						<span style="margin-inline-end: 5px;">{{header.title}}</span>
+						<Icon
+								v-if="header.sortable"
+								size="16px"
+								name="arrow-down"
+								:inverse="sorting.property === property && sorting.desc"
+						/>
+					</div>
+				</th>
 				<th v-if="actions">عملیات‌ها</th>
 			</tr>
 		</thead>
@@ -119,24 +137,35 @@
 			value: {type: Array, default: () => []},
 			actions: {type: Object, default: () => undefined},
 			perPage: {type: Number, default: 0},
-			clickableRows: {type: Boolean, default: false}
+			clickableRows: {type: Boolean, default: false},
+		},
+		watch:{
+			items(){
+				this.changeOrder(this.sorting.property, this.sorting.desc);
+			}
 		},
 		data: function(){
-			return {
+			const d = {
 				actionSize: '32px',
 				page: 1,
-			}
+				sortedItems: this.$utility.copyObj(this.items),
+				sorting: {
+					property: null,
+					desc: false,
+				}
+			};
+			return d;
 		},
 		computed:{
 			isLoading(){
 				return this.fetching;
 			},
 			pageItems(){
-				if(!this.perPage) return this.items;
-				return this.items.slice((this.page-1) * this.perPage, this.page * this.perPage + 1)
+				if(!this.perPage) return this.sortedItems;
+				return this.sortedItems.slice((this.page-1) * this.perPage, this.page * this.perPage + 1)
 			},
 			totalPages(){
-				if(!this.perPage) return 1;
+				if(!this.perPage || !this.items.length) return 1;
 				return Math.ceil(this.items.length / this.perPage);
 			},
 			selected:{
@@ -165,6 +194,38 @@
 				return this.$store.getters.smAndDown;
 			}
 		},
+		methods:{
+			sort(property){
+				// change sorting status
+				if(this.sorting.property === property){
+					if(!this.sorting.desc){
+						this.sorting.desc = true;
+					}else{
+						this.sorting.property = null;
+						this.sorting.desc = false;
+					}
+				}else{
+					this.sorting.property = property;
+					this.sorting.desc = false;
+				}
+
+				this.changeOrder(this.sorting.property, this.sorting.desc);
+			},
+			changeOrder(property, desc){
+				// if sorting is disabled return to original state
+				if(!property){
+					this.sortedItems = this.$utility.copyObj(this.items);
+					return;
+				}
+				// do the sorting
+				desc = desc ? -1 : 1;
+				this.sortedItems.sort(function(a, b){
+					if (a[property] > b[property]) return desc;
+					if (a[property] < b[property]) return -1 * desc;
+					return 0;
+				});
+			}
+		}
 	}
 </script>
 
@@ -182,6 +243,23 @@
 	th{
 		text-align: center;
 		padding: 10px 10px;
+		cursor: initial;
+	}
+	th.sortable{
+		cursor: pointer;
+	}
+	th.sortable i{
+		color: var(--color-line);
+	}
+	th.sortable.active i{
+		color: var(--color-primary);
+	}
+	th .table-header-content{
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+
 	}
 	tr:not(.footer){
 		border-bottom: 1px solid var(--color-line);
@@ -225,7 +303,7 @@
 		padding: 16px 16px;
 	}
 
-	.item-info{margin-bottom: 5px;}
+	.item-info{ margin-bottom: 5px; }
 	.item-info .title{ font-weight: bold; }
 
 	/* custom checkbox */
@@ -260,17 +338,6 @@
 	}
 	.clickable:hover{
 		background-color: var(--color-line);
-	}
-
-	/* animation */
-	.table-fade-enter-active, .table-fade-leave-active {
-		transition: opacity .3s;
-	}
-	.table-fade-enter, .table-fade-leave-to {
-		opacity: 0;
-	}
-	.table-fade-move{
-		transition: transform .3s;
 	}
 
 </style>

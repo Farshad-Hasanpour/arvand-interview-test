@@ -23,7 +23,7 @@
 	import Table from '@/components/table/Table';
 
 	const headers = {
-		postId: {title: 'پست', dir: 'ltr', sortable: true},
+		postId: {title: 'پست', dir: 'ltr', width: '85px', sortable: true},
 		email: {title: 'ایمیل', dir: 'ltr', sortable: true},
 		name: {title: 'نام', dir: 'ltr', sortable: true},
 		body: {title: 'نظر', dir: 'ltr'}
